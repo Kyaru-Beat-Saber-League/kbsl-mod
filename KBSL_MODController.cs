@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HMUI;
+using TMPro;
 using UnityEngine;
 
 namespace KBSL_MOD
@@ -41,7 +36,15 @@ namespace KBSL_MOD
         /// </summary>
         private void Start()
         {
-
+            gameObject.AddComponent<Canvas>();
+            var textMesh = new GameObject("Text").AddComponent<CurvedTextMeshPro>();
+            textMesh.transform.SetParent(transform);
+            textMesh.alignment = TextAlignmentOptions.Center;
+            textMesh.transform.eulerAngles = new Vector3(90, 0, 0);
+            textMesh.transform.position = new Vector3(0, 0.1f, 1.5f);
+            textMesh.color = Color.white;
+            textMesh.fontSize = 0.5f;
+            textMesh.text = "Test";
         }
 
         /// <summary>

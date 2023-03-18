@@ -2,10 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
   "id": "KBSL_MOD",
   "name": "KBSL-MOD",
-  "author": "",
+  "author": "ribeKim",
   "version": "0.0.1",
-  "description": "",
-  "gameVersion": "1.18.3",
+  "description": "점수를 KBSL로 전송하는 프로젝트",
+  "gameVersion": "1.28.0",
   "dependsOn": {
     "BSIPA": "^4.2.0"
   }
