@@ -145,9 +145,10 @@
   <ItemGroup>
     <Compile Include="Common\SceneNames.cs" />
     <Compile Include="ConfigModels\MainConfigModel.cs" />
+    <Compile Include="EventHandlers\NoteEventHandler.cs" />
+    <Compile Include="EventHandlers\ScoreEventHandler.cs" />
     <Compile Include="Installers\ScoreInstaller.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="KBSL_MODController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -164,6 +165,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Interfaces" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
