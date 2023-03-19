@@ -5,6 +5,7 @@ using IPA.Config;
 using IPA.Config.Stores;
 using System.Reflection;
 using KBSL_MOD.ConfigModels;
+using KBSL_MOD.Events;
 using SiraUtil.Zenject;
 using IPALogger = IPA.Logging.Logger;
 using HarmonyObj = HarmonyLib.Harmony;
