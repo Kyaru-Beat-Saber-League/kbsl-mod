@@ -1,13 +1,13 @@
-﻿using IPA;
+﻿
+using KBSL_MOD.Installers;
+using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using System.Reflection;
+using KBSL_MOD.ConfigModels;
+using SiraUtil.Zenject;
 using IPALogger = IPA.Logging.Logger;
+using HarmonyObj = HarmonyLib.Harmony;
 
 namespace KBSL_MOD
 {
@@ -16,45 +16,37 @@ namespace KBSL_MOD
     {
         internal static Plugin Instance { get; private set; }
         internal static IPALogger Log { get; private set; }
+        internal static MainConfigModel MainConfig { get; private set; }
 
-        [Init]
+        private HarmonyObj HarmonyObj;
+
         /// <summary>
         /// Called when the plugin is first loaded by IPA (either when the game starts or when the plugin is enabled if it starts disabled).
         /// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
         /// Only use [Init] with one Constructor.
         /// </summary>
-        public void Init(IPALogger logger)
+        [Init]
+        public void Init(IPALogger logger,
+            [Config.Name("KBSL")] Config conf,
+            Zenjector zenjector)
         {
             Instance = this;
             Log = logger;
+            MainConfig = conf.Generated<MainConfigModel>();
+            HarmonyObj = new HarmonyObj("test");
+            
+            zenjector.UseHttpService();
+            zenjector.Expose<CoreGameHUDController>("Environment");
+            
+            zenjector.Install<ScoreInstaller>(Location.StandardPlayer | Location.CampaignPlayer);
+
             Log.Info("KBSL-MOD initialized.");
         }
 
-        #region BSIPA Config
-        //Uncomment to use BSIPA's config
-        /*
-        [Init]
-        public void InitWithConfig(Config conf)
-        {
-            Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
-            Log.Debug("Config loaded");
-        }
-        */
-        #endregion
+        [OnEnable]
+        public void OnEnable() => HarmonyObj.PatchAll(Assembly.GetExecutingAssembly());
 
-        [OnStart]
-        public void OnApplicationStart()
-        {
-            Log.Debug("OnApplicationStart");
-            new GameObject("KBSL_MODController").AddComponent<KBSL_MODController>();
-
-        }
-
-        [OnExit]
-        public void OnApplicationQuit()
-        {
-            Log.Debug("OnApplicationQuit");
-
-        }
+        [OnDisable]
+        public void OnDisable() => HarmonyObj.UnpatchSelf();
     }
 }
