@@ -1,5 +1,5 @@
 ﻿using KBSL_MOD.ConfigModels;
-using UnityEngine;
+using KBSL_MOD.Events;
 using Zenject;
 
 namespace KBSL_MOD.Installers
@@ -15,6 +15,9 @@ namespace KBSL_MOD.Installers
             if (!mainConfig.Enabled) return;
 
             Plugin.Log.Notice("Loading ScoreInstaller...");
+
+            Container.BindInterfacesTo<NoteEventHandler>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<ScoreEventHandler>().AsSingle().NonLazy();
         }
     }
 }
