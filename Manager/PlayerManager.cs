@@ -5,20 +5,21 @@ namespace KBSL_MOD.Manager
 {
     public class PlayerManager : IInitializable
     {
-        private readonly IPlatformUserModel _platformUserModel;
+        public string UserName { get; set; }
+        public string PlatformUserId { get; set; }
         
-        public PlayerManager(IPlatformUserModel platformUserModel)
-        {
-            _platformUserModel = platformUserModel;
-        }
+        [Inject] private readonly IPlatformUserModel _platformUserModel;
 
         public async void Initialize()
         {
             var playerInfo = await _platformUserModel.GetUserInfo();
+            UserName = playerInfo.userName;
+            PlatformUserId = playerInfo.platformUserId;
             
             Plugin.Log.Notice("====================");
             Plugin.Log.Notice(playerInfo.userName);
             Plugin.Log.Notice(playerInfo.platformUserId);
+            Plugin.Log.Notice(playerInfo.platform.ToString());
             Plugin.Log.Notice("====================");
         }
     }
