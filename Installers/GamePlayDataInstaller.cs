@@ -4,7 +4,7 @@ using Zenject;
 
 namespace KBSL_MOD.Installers
 {
-    public class ScoreInstaller : MonoInstaller
+    public class GamePlayDataInstaller : MonoInstaller
     {
         [Inject] public readonly PlayerManager _playerManager;
 
