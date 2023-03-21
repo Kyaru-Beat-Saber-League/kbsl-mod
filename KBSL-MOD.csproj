@@ -144,7 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\SceneNames.cs" />
-    <Compile Include="ConfigModels\MainConfigModel.cs" />
+    <Compile Include="Models\MainConfigModel.cs" />
     <Compile Include="EventHandlers\NoteEventHandler.cs" />
     <Compile Include="EventHandlers\ScoreEventHandler.cs" />
     <Compile Include="Installers\ScoreInstaller.cs" />

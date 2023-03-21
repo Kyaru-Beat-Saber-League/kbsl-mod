@@ -1,7 +1,6 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
 
-
-namespace KBSL_MOD.ConfigModels
+namespace KBSL_MOD.Models
 {
     public class MainConfigModel
     {
