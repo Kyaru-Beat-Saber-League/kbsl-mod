@@ -6,11 +6,9 @@ namespace KBSL_MOD.Installers
 {
     public class ScoreInstaller : MonoInstaller
     {
-        [Inject] private readonly PlayerDataModel DataModel;
-
         public override void InstallBindings()
         {
-            MainConfigModel mainConfig = Plugin.MainConfig;
+            var mainConfig = Plugin.MainConfig;
 
             if (!mainConfig.Enabled) return;
 
