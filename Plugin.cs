@@ -4,8 +4,7 @@ using IPA;
 using IPA.Config;
 using IPA.Config.Stores;
 using System.Reflection;
-using KBSL_MOD.ConfigModels;
-using KBSL_MOD.Events;
+using KBSL_MOD.Models;
 using SiraUtil.Zenject;
 using IPALogger = IPA.Logging.Logger;
 using HarmonyObj = HarmonyLib.Harmony;
@@ -39,7 +38,7 @@ namespace KBSL_MOD
             zenjector.UseHttpService();
             zenjector.Expose<CoreGameHUDController>("Environment");
             
-            zenjector.Install<AppInitInstaller>(Location.App);
+            zenjector.Install<AppInstaller>(Location.App);
             zenjector.Install<ScoreInstaller>(Location.StandardPlayer | Location.CampaignPlayer);
 
             Log.Info("KBSL-MOD initialized.");
