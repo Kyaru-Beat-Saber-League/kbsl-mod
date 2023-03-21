@@ -148,7 +148,7 @@
     <Compile Include="EventHandlers\NoteEventHandler.cs" />
     <Compile Include="EventHandlers\ScoreEventHandler.cs" />
     <Compile Include="Installers\ScoreInstaller.cs" />
-    <Compile Include="Installers\AppInitInstaller.cs" />
+    <Compile Include="Installers\AppInstaller.cs" />
     <Compile Include="Manager\PlayerManager.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="KBSL_MODController.cs" />

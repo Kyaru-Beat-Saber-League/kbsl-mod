@@ -1,9 +1,10 @@
 ﻿using KBSL_MOD.Manager;
+using KBSL_MOD.Models;
 using Zenject;
 
 namespace KBSL_MOD.Installers
 {
-    public class AppInitInstaller : MonoInstaller
+    public class AppInstaller : MonoInstaller
     {
         public override void InstallBindings()
         {
