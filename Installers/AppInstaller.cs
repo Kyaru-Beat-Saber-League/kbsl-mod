@@ -8,7 +8,7 @@ namespace KBSL_MOD.Installers
     {
         public override void InstallBindings()
         {
-            Container.BindInterfacesTo<PlayerManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerManager>().AsSingle();
         }
     }
 }
