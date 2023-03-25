@@ -18,9 +18,7 @@ namespace KBSL_MOD.Installers
             Plugin.Log.Notice(_playerManager.UserName);
             Plugin.Log.Notice(_playerManager.PlatformUserId);
 
-            Container.BindInterfacesTo<SongEventHandler>().AsSingle().NonLazy();
-            Container.BindInterfacesTo<NoteEventHandler>().AsSingle().NonLazy();
-            Container.BindInterfacesTo<ScoreEventHandler>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<MainGameEventHandler>().AsSingle().NonLazy();
         }
     }
 }
