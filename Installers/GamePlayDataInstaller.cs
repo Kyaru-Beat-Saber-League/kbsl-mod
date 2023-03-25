@@ -1,13 +1,12 @@
 ﻿using KBSL_MOD.Events;
 using KBSL_MOD.Manager;
+using KBSL_MOD.Utils;
 using Zenject;
 
 namespace KBSL_MOD.Installers
 {
     public class GamePlayDataInstaller : MonoInstaller
     {
-        [Inject] public readonly PlayerManager _playerManager;
-
         public override void InstallBindings()
         {
             var mainConfig = Plugin.MainConfig;
@@ -15,9 +14,10 @@ namespace KBSL_MOD.Installers
             if (!mainConfig.Enabled) return;
 
             Plugin.Log.Notice("Loading ScoreInstaller...");
-            Plugin.Log.Notice(_playerManager.UserName);
-            Plugin.Log.Notice(_playerManager.PlatformUserId);
-
+            GamePlayUtils.Init();
+            
+            if (!GamePlayUtils.isGameStart) return;
+            
             Container.BindInterfacesTo<MainGameEventHandler>().AsSingle().NonLazy();
         }
     }
