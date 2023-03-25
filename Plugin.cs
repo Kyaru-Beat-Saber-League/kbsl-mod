@@ -39,7 +39,7 @@ namespace KBSL_MOD
             zenjector.Expose<CoreGameHUDController>("Environment");
             
             zenjector.Install<AppInstaller>(Location.App);
-            zenjector.Install<GamePlayDataInstaller>(Location.StandardPlayer | Location.CampaignPlayer);
+            zenjector.Install<GamePlayDataInstaller>(Location.StandardPlayer);
 
             Log.Info("KBSL-MOD initialized.");
         }
