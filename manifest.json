@@ -5,7 +5,7 @@
   "author": "ribeKim",
   "version": "0.0.1",
   "description": "점수를 KBSL로 전송하는 프로젝트",
-  "gameVersion": "1.28.0",
+  "gameVersion": "1.29.0",
   "dependsOn": {
     "BSIPA": "^4.2.0"
   }
