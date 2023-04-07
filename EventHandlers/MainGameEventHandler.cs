@@ -1,42 +1,64 @@
 ﻿using System;
+using JetBrains.Annotations;
+using KBSL_MOD.Common;
+using KBSL_MOD.Models;
+using KBSL_MOD.Utils;
+using Newtonsoft.Json;
 using Zenject;
 
-namespace KBSL_MOD.Events
+namespace KBSL_MOD.EventHandlers
 {
+    [UsedImplicitly]
     public class MainGameEventHandler : IInitializable, IDisposable
     {
         [Inject] private GameSongController _gameSongController;
         [Inject] private BeatmapObjectManager _beatmapObjectManager;
         [Inject] private ScoreController _scoreController;
-        // [Inject] private BeatmapLevelSO _beatmapLevelSO;
         [Inject] private GameplayCoreSceneSetupData _gameplayCoreSceneSetup;
         [Inject] private PlayerDataModel _playerDataModel;
+        [Inject] private StandardLevelScenesTransitionSetupDataSO _levelScenesTransitionSetupDataSo;
         
-        private int _goodCuts = 0;
-        private int _allCuts = 0;
+        private int _goodCuts;
+        private int _allCuts;
+        private int _modifiedScore;
 
         private void NoteWasCutEvent(NoteController controller, in NoteCutInfo info)
         {
             _allCuts++;
             if (controller.noteData.colorType != ColorType.None && info.allIsOK) _goodCuts++;
-            Plugin.Log.Info($"allCut: {_allCuts} goodCut: {_goodCuts} percentage: {(float)_goodCuts / _allCuts * 100.0f}%");
         }
 
         private void NoteWasMissedEvent(NoteController controller)
         {
             if (controller.noteData.colorType == ColorType.None) return;
             _allCuts++;
-            Plugin.Log.Info($"allCut: {_allCuts} goodCut: {_goodCuts} percentage: {(float)_goodCuts / _allCuts * 100.0f}%");
         }
 
         private void ScoreDidChangeEvent(int rawScore, int modifiedScore)
         {
-            Plugin.Log.Info($"RawScore: {rawScore} modifiedScore: {modifiedScore}");
+            _modifiedScore = modifiedScore;
         }
         
         private void SongDidFinishEvent()
         {
-            Plugin.Log.Notice("SongDidFinishEvent!");
+            var beatmapLevel = _gameplayCoreSceneSetup.previewBeatmapLevel;
+            var scores = new LeaderModel
+            {
+                BaseScore = _modifiedScore,
+                Accuracy = (double)_goodCuts / _allCuts * 100.0f,
+                BadCut = _allCuts - _goodCuts,
+                SongHash = beatmapLevel.levelID.Replace("custom_level_", ""),
+                SongModeType = _gameplayCoreSceneSetup.difficultyBeatmap.parentDifficultyBeatmapSet.beatmapCharacteristic.serializedName,
+                SongDifficulty = _gameplayCoreSceneSetup.difficultyBeatmap.difficulty.ToString()
+            };
+
+            CoroutineUtils.instance.StartCoroutine(WebRequestUtils.Post(
+                url: $"{KbslConsts.BaseURL}/score",
+                body: JsonConvert.SerializeObject(scores),
+                onSuccess: success => { Plugin.Log.Notice(JsonConvert.SerializeObject(success)); },
+                onFailure: x => Plugin.Log.Notice(x)));
+
+            Plugin.Log.Notice(JsonConvert.SerializeObject(scores));
         }
         
         public void Initialize()
@@ -45,11 +67,6 @@ namespace KBSL_MOD.Events
             _beatmapObjectManager.noteWasMissedEvent += NoteWasMissedEvent;
             _scoreController.scoreDidChangeEvent += ScoreDidChangeEvent;
             _gameSongController.songDidFinishEvent += SongDidFinishEvent;
-
-            var pbl = _gameplayCoreSceneSetup.previewBeatmapLevel;
-            Plugin.Log.Notice($"name: {pbl.songName} / {pbl.songAuthorName} / {pbl.levelID} / {pbl.levelAuthorName}");
-            Plugin.Log.Notice("MainGameEventHandler Initialized!");
-            
         }
 
         public void Dispose()
@@ -58,7 +75,7 @@ namespace KBSL_MOD.Events
             _beatmapObjectManager.noteWasMissedEvent -= NoteWasMissedEvent;
             _scoreController.scoreDidChangeEvent -= ScoreDidChangeEvent;
             _gameSongController.songDidFinishEvent -= SongDidFinishEvent;
-            Plugin.Log.Notice("MainGameEventHandler Disposed!");
+            GamePlayUtils.Init();
         }
     }
 }
