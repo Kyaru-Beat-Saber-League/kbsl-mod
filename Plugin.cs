@@ -5,6 +5,8 @@ using IPA.Config;
 using IPA.Config.Stores;
 using System.Reflection;
 using KBSL_MOD.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using SiraUtil.Zenject;
 using IPALogger = IPA.Logging.Logger;
 using HarmonyObj = HarmonyLib.Harmony;
@@ -40,6 +42,11 @@ namespace KBSL_MOD
             
             zenjector.Install<AppInstaller>(Location.App);
             zenjector.Install<GamePlayDataInstaller>(Location.StandardPlayer);
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
+            };
 
             Log.Info("KBSL-MOD initialized.");
         }
